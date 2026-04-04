@@ -1,40 +1,25 @@
-# Whitelist approach: ignore everything, then allow only what Docker builds need
-# This reduces build context from ~900MB to just what's required
+# Exclusion-only patterns for Railpack / Railway and local Docker builds.
+# Upstream’s whitelist-style .dockerignore (ignore * then !paths) makes Railpack emit
+# overlapping COPY layers and can fail with: cannot copy to non-directory .../app/**
 
-# Ignore everything first
-*
+node_modules
+**/node_modules
+.git
+.github
+.turbo
+**/.turbo
+.pnpm-store
+**/.pnpm-store
 
-# === n8n main image (docker/images/n8n/Dockerfile) ===
-!compiled
-!compiled/**
-!THIRD_PARTY_LICENSES.md
+# Do not exclude `compiled` or `dist` — official Docker builds COPY them from context after CI runs build:n8n.
 
-# === runners image (docker/images/runners/Dockerfile + Dockerfile.distroless) ===
-!dist
-!dist/task-runner-javascript
-!dist/task-runner-javascript/**
-!packages
-!packages/@n8n
-!packages/@n8n/task-runner-python
-!packages/@n8n/task-runner-python/**
+coverage
+.nyc_output
+playwright-report
+test-results
+*.log
+pnpm-debug.log
 
-# === Docker build files (entrypoints, configs) ===
-!docker
-!docker/images
-!docker/images/n8n
-!docker/images/n8n/docker-entrypoint.sh
-!docker/images/runners
-!docker/images/runners/n8n-task-runners.json
-
-# === benchmark image (packages/@n8n/benchmark/Dockerfile) ===
-!package.json
-!pnpm-lock.yaml
-!pnpm-workspace.yaml
-!patches
-!patches/**
-!scripts
-!scripts/**
-!packages/@n8n/benchmark
-!packages/@n8n/benchmark/**
-!packages/@n8n/typescript-config
-!packages/@n8n/typescript-config/**
+.DS_Store
+.idea
+.vscode
