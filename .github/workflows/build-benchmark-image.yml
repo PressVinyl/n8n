@@ -2,14 +2,15 @@ name: 'Build: Benchmark Image'
 
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - master
-    paths:
-      - 'packages/@n8n/benchmark/**'
-      - 'pnpm-lock.yaml'
-      - 'pnpm-workspace.yaml'
-      - '.github/workflows/build-benchmark-image.yml'
+  # PressVinyl fork: push disabled — upstream Docker CI not used on this fork.
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'packages/@n8n/benchmark/**'
+  #     - 'pnpm-lock.yaml'
+  #     - 'pnpm-workspace.yaml'
+  #     - '.github/workflows/build-benchmark-image.yml'
 
 jobs:
   build:

@@ -5,9 +5,10 @@ on:
     paths:
       - packages/@n8n/ai-workflow-builder.ee/evaluations/programmatic/python/**
       - .github/workflows/test-evals-python.yml
-  push:
-    paths:
-      - packages/@n8n/ai-workflow-builder.ee/evaluations/programmatic/python/**
+  # PressVinyl fork: push disabled
+  # push:
+  #   paths:
+  #     - packages/@n8n/ai-workflow-builder.ee/evaluations/programmatic/python/**
 
 jobs:
   workflow-comparison:

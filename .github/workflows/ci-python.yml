@@ -5,9 +5,10 @@ on:
     paths:
       - packages/@n8n/task-runner-python/**
       - .github/workflows/ci-python.yml
-  push:
-    paths:
-      - packages/@n8n/task-runner-python/**
+  # PressVinyl fork: push disabled
+  # push:
+  #   paths:
+  #     - packages/@n8n/task-runner-python/**
 
 jobs:
   checks:

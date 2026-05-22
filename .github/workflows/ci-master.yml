@@ -1,12 +1,14 @@
 name: 'CI: Master (Build, Test, Lint)'
 
 on:
-  push:
-    branches:
-      - master
-      - 1.x
-    paths-ignore:
-      - packages/@n8n/task-runner-python/**
+  # PressVinyl fork: push disabled — Railway deploys from master; upstream CI needs n8n-io secrets.
+  workflow_dispatch:
+  # push:
+  #   branches:
+  #     - master
+  #     - 1.x
+  #   paths-ignore:
+  #     - packages/@n8n/task-runner-python/**
 
 jobs:
   build-github:

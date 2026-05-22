@@ -1,12 +1,13 @@
 name: 'Build: Base Image'
 
 on:
-  push:
-    branches:
-      - master
-    paths:
-      - 'docker/images/n8n-base/Dockerfile'
-      - '.github/workflows/build-base-image.yml'
+  # PressVinyl fork: push disabled — fails without DOCKER_* secrets; Railway builds via Railpack.
+  # push:
+  #   branches:
+  #     - master
+  #   paths:
+  #     - 'docker/images/n8n-base/Dockerfile'
+  #     - '.github/workflows/build-base-image.yml'
   pull_request:
     paths:
       - 'docker/images/n8n-base/Dockerfile'
