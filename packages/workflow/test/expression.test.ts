@@ -777,6 +777,57 @@ describe('Expression', () => {
 				);
 			});
 		});
+
+		// CAT-3075: feature parity between legacy and VM engines for empty expressions.
+		// The legacy engine returns "" via Tournament.execute's empty-input guard;
+		// the VM engine bypassed that guard and threw
+		// `TypeError: Cannot read properties of undefined (reading 'text')`.
+		it('should resolve "=" (empty expression marker) to "" (CAT-3075)', () => {
+			expect(evaluate('=')).toBe('');
+		});
+
+		describe('additionalKeys', () => {
+			const node = workflow.nodes.node;
+
+			it('should resolve $credentials in expressions', () => {
+				const result = expression.getSimpleParameterValue(
+					node,
+					'={{$credentials.serviceRole}}',
+					'internal',
+					{ $credentials: { serviceRole: 'test-api-key' } },
+					undefined,
+					'',
+				);
+
+				expect(result).toBe('test-api-key');
+			});
+
+			it('should resolve $credentials in template strings', () => {
+				const result = expression.getSimpleParameterValue(
+					node,
+					'=Bearer {{$credentials.serviceRole}}',
+					'internal',
+					{ $credentials: { serviceRole: 'test-api-key' } },
+					undefined,
+					'',
+				);
+
+				expect(result).toBe('Bearer test-api-key');
+			});
+
+			it('should resolve primitive additionalKeys', () => {
+				const result = expression.getSimpleParameterValue(
+					node,
+					'={{$pageCount}}',
+					'internal',
+					{ $pageCount: 42 },
+					undefined,
+					'',
+				);
+
+				expect(result).toBe(42);
+			});
+		});
 	});
 
 	describe('Test all expression value fixtures', () => {

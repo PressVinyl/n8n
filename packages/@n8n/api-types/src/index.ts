@@ -8,6 +8,31 @@ export type * from './user';
 export type * from './api-keys';
 export type * from './community-node-types';
 export type * from './quick-connect';
+export * from './agents';
+export type { AgentSseEvent, AgentSseMessage, ToolSuspendedPayload } from './agent-sse';
+export {
+	ASK_LLM_TOOL_NAME,
+	ASK_CREDENTIAL_TOOL_NAME,
+	ASK_QUESTION_TOOL_NAME,
+	interactiveToolNameSchema,
+	askLlmInputSchema,
+	askLlmResumeSchema,
+	askCredentialInputSchema,
+	askCredentialResumeSchema,
+	askQuestionOptionSchema,
+	askQuestionInputSchema,
+	askQuestionResumeSchema,
+	interactiveResumeDataSchema,
+	type InteractiveToolName,
+	type AskLlmInput,
+	type AskLlmResume,
+	type AskCredentialInput,
+	type AskCredentialResume,
+	type AskQuestionOption,
+	type AskQuestionInput,
+	type AskQuestionResume,
+	type InteractiveResumeData,
+} from './agent-builder-interactive';
 export * from './instance-registry-types';
 export {
 	chatHubConversationModelSchema,
@@ -107,6 +132,9 @@ export type { HeartbeatMessage } from './push/heartbeat';
 export { createHeartbeatMessage, heartbeatMessageSchema } from './push/heartbeat';
 export type { SendWorkerStatusMessage } from './push/worker';
 
+export type { FavoriteResourceType } from './schemas/favorites.schema';
+export { FAVORITE_RESOURCE_TYPES } from './schemas/favorites.schema';
+
 export type { BannerName } from './schemas/banner-name.schema';
 export { ViewableMimeTypes } from './schemas/binary-data.schema';
 export { passwordSchema, createPasswordSchema } from './schemas/password.schema';
@@ -174,6 +202,13 @@ export {
 } from './schemas/user.schema';
 
 export {
+	encryptionKeySchema,
+	encryptionKeysListSchema,
+	type EncryptionKey,
+	type EncryptionKeysList,
+} from './schemas/encryption-key.schema';
+
+export {
 	DATA_TABLE_COLUMN_REGEX,
 	DATA_TABLE_COLUMN_MAX_LENGTH,
 	DATA_TABLE_COLUMN_ERROR_MESSAGE,
@@ -185,6 +220,7 @@ export {
 	type DataTableListSortBy,
 	dateTimeSchema,
 	dataTableColumnNameSchema,
+	dataTableIdSchema,
 } from './schemas/data-table.schema';
 
 export type {
@@ -237,6 +273,8 @@ export type {
 } from './schemas/secrets-provider.schema';
 
 export {
+	SECRETS_PROVIDER_KEY_PATTERN,
+	SECRETS_PROVIDER_KEY_REGEX,
 	testSecretProviderConnectionResponseSchema,
 	reloadSecretProviderConnectionResponseSchema,
 } from './schemas/secrets-provider.schema';
@@ -247,9 +285,9 @@ export {
 } from './schemas/community-package.schema';
 
 export {
-	publicApiCreatedCredentialSchema,
-	type PublicApiCreatedCredential,
-} from './schemas/credential-created.schema';
+	publicApiCredentialResponseSchema,
+	type PublicApiCredentialResponse,
+} from './schemas/credential-response.schema';
 
 export {
 	instanceAiEventTypeSchema,
@@ -271,26 +309,30 @@ export {
 	toolResultPayloadSchema,
 	toolErrorPayloadSchema,
 	confirmationRequestPayloadSchema,
+	confirmationInputTypeSchema,
 	credentialRequestSchema,
 	workflowSetupNodeSchema,
 	errorPayloadSchema,
 	filesystemRequestPayloadSchema,
-	instanceAiFilesystemResponseSchema,
-	instanceAiGatewayCapabilitiesSchema,
 	mcpToolSchema,
 	mcpToolCallRequestSchema,
 	mcpToolCallResultSchema,
 	getRenderHint,
+	isDisplayableConfirmationRequest,
 	isSafeObjectKey,
 	DEFAULT_INSTANCE_AI_PERMISSIONS,
 	UNLIMITED_CREDITS,
 	domainAccessActionSchema,
 	domainAccessMetaSchema,
+	webSearchMetaSchema,
 	credentialFlowSchema,
+	gatewayConfirmationRequiredWirePayloadSchema,
 	gatewayConfirmationRequiredPayloadSchema,
+	instanceGatewayResourceDecisionSchema,
 	GATEWAY_CONFIRMATION_REQUIRED_PREFIX,
 	InstanceAiSendMessageRequest,
 	InstanceAiEvalExecutionRequest,
+	InstanceAiEvalSubAgentRequest,
 	instanceAiGatewayKeySchema,
 	InstanceAiGatewayEventsQuery,
 	InstanceAiEventsQuery,
@@ -299,6 +341,8 @@ export {
 	InstanceAiThreadMessagesQuery,
 	InstanceAiAdminSettingsUpdateRequest,
 	InstanceAiUserPreferencesUpdateRequest,
+	InstanceAiGatewayCapabilitiesDto,
+	InstanceAiFilesystemResponseDto,
 	applyBranchReadOnlyOverrides,
 } from './schemas/instance-ai.schema';
 
@@ -310,6 +354,8 @@ export type {
 	InstanceAiEventType,
 	InstanceAiRunStatus,
 	InstanceAiConfirmation,
+	InstanceAiConfirmationInputType,
+	InstanceAiConfirmationRequestPayload,
 	InstanceAiConfirmationSeverity,
 	InstanceAiCredentialRequest,
 	InstanceAiAgentStatus,
@@ -337,7 +383,6 @@ export type {
 	InstanceAiEvent,
 	InstanceAiAttachment,
 	InstanceAiSendMessageResponse,
-	InstanceAiConfirmResponse,
 	InstanceAiToolCallState,
 	InstanceAiAgentNode,
 	InstanceAiTimelineEntry,
@@ -359,8 +404,11 @@ export type {
 	InstanceAiTargetResource,
 	DomainAccessAction,
 	DomainAccessMeta,
+	WebSearchMeta,
 	InstanceAiCredentialFlow,
+	GatewayConfirmationRequiredWirePayload,
 	GatewayConfirmationRequiredPayload,
+	InstanceGatewayResourceDecision,
 	ToolCategory,
 	InstanceAiWorkflowSetupNode,
 	PlannedTaskArg,
@@ -369,6 +417,9 @@ export type {
 	InstanceAiEvalNodeResult,
 	InstanceAiEvalMockHints,
 	InstanceAiEvalExecutionResult,
+	InstanceAiEvalToolCall,
+	InstanceAiEvalToolResult,
+	InstanceAiEvalSubAgentResponse,
 } from './schemas/instance-ai.schema';
 
 export {
@@ -380,4 +431,20 @@ export {
 
 export type { AgentRunState, AgentNode } from './schemas/agent-run-reducer';
 
+export {
+	EVAL_PARALLEL_EXECUTION_FLAG,
+	startTestRunPayloadSchema,
+	StartTestRunRequestDto,
+	type StartTestRunPayload,
+} from './schemas/evaluations.schema';
+
 export { ALLOWED_DOMAINS, isAllowedDomain } from './utils/allowed-domains';
+
+export {
+	X_N8N_FEATURE_HEADER,
+	X_N8N_VERSION_HEADER,
+	N8N_PROXY_FEATURES,
+	buildProxyHeaders,
+	type N8nProxyFeature,
+	type ProxyHeaderInput,
+} from './constants/proxy-feature';

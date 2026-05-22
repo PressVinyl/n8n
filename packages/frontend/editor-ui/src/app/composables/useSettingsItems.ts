@@ -9,6 +9,7 @@ import { useUIStore } from '../stores/ui.store';
 import { useSettingsStore } from '../stores/settings.store';
 import { hasPermission } from '../utils/rbac/permissions';
 import { MIGRATION_REPORT_TARGET_VERSION } from '@n8n/api-types';
+import { useEnvFeatureFlag } from '@/features/shared/envFeatureFlag/useEnvFeatureFlag';
 
 export function useSettingsItems() {
 	const router = useRouter();
@@ -17,6 +18,7 @@ export function useSettingsItems() {
 	const settingsStore = useSettingsStore();
 	const { canUserAccessRouteByName } = useUserHelpers(router);
 	const { balance } = useAiGateway();
+	const { check: envFeatureFlagCheck } = useEnvFeatureFlag();
 
 	const settingsItems = computed<IMenuItem[]>(() => {
 		const menuItems: IMenuItem[] = [
@@ -116,6 +118,16 @@ export function useSettingsItems() {
 				position: 'top',
 				available: canUserAccessRouteByName(VIEWS.SSO_SETTINGS),
 				route: { to: { name: VIEWS.SSO_SETTINGS } },
+			},
+			{
+				id: 'settings-encryption-keys',
+				icon: 'key-round',
+				label: i18n.baseText('settings.encryptionKeys'),
+				position: 'top',
+				available:
+					envFeatureFlagCheck.value('ENCRYPTION_KEY_ROTATION') &&
+					canUserAccessRouteByName(VIEWS.ENCRYPTION_KEYS_SETTINGS),
+				route: { to: { name: VIEWS.ENCRYPTION_KEYS_SETTINGS } },
 			},
 			{
 				id: 'settings-security',
